@@ -1,0 +1,59 @@
+#include <Servo.h>
+
+int sensorPin = A0;
+int servoPin1  = 9;
+int servoPin2  = 6;
+
+int sensorValue = 0;
+int servoGrad1 = 90;
+int tolerance1 = 40;
+int servoGrad2 = 90;
+int tolerance2 = 40;
+
+Servo myservo1;
+Servo myservo2;
+
+void setup() {
+  pinMode( sensorPin, INPUT);
+  myservo1.attach( servoPin1 );
+  myservo1.write( servoGrad1 );
+  myservo2.attach( servoPin2 );
+  myservo2.write( servoGrad2 );
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin);
+  
+  // servo 1
+  if ( sensorValue < (525 - tolerance1) )
+  {
+    if (servoGrad1 < 180) servoGrad1++;
+
+  }
+
+  if ( sensorValue > (525 + tolerance1) )
+  {
+    if (servoGrad1 > 0) servoGrad1--;
+
+  }
+
+  // servo 2
+  if ( sensorValue < (525 - tolerance2) )
+  {
+    if (servoGrad2 < 180) servoGrad2++;
+  }
+
+  if ( sensorValue > (525 + tolerance2) )
+  {
+    if (servoGrad2 > 0) servoGrad2--;
+  }
+
+  myservo1.write( servoGrad1 );
+  myservo2.write( servoGrad2 );
+
+
+  //Serial.println(sensorValue);
+  delay(100);
+}
